@@ -4,122 +4,72 @@ class ChangeRequestPage extends StatefulWidget {
   const ChangeRequestPage({super.key});
 
   @override
-  State<ChangeRequestPage> createState() => _RequestViewState();
+  State<ChangeRequestPage> createState() => _ChangeRequestPage();
 }
 
-class _RequestViewState extends State<ChangeRequestPage> {
+class _ChangeRequestPage extends State<ChangeRequestPage> {
+  // Pickup / Dropoff selection
+  bool isPickup = true;
 
-  bool isPickupSelected = true;
+  // Saved addresses selection
+  String selectedAddress = 'Home';
+
+  // Date selection
+  String selectedDateOption = 'Tomorrow';
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width for responsive button
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4F4F4),
-
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        title: const Text('Request'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: const Text(
-          "Request",
-          style: TextStyle(color: Colors.black),
-        ),
       ),
-
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
           children: [
-
-            const SizedBox(height: 20),
-
-            const Text(
-              "Change pickup or drop-off for",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 5),
-
-            const Text(
-              "Tomorrow (Wednesday 05/11)",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
-            /// 🔥 Dynamic Toggle
+            // Pickup / Dropoff toggle
             Container(
-              height: 50,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.grey.shade400),
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade200,
               ),
               child: Row(
                 children: [
-
-                  /// Pickup
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isPickupSelected = true;
-                        });
-                      },
+                      onTap: () => setState(() => isPickup = true),
                       child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: isPickupSelected
-                              ? const Color(0xffDCC8A1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Pickup",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: isPickupSelected
-                                ? Colors.black
-                                : Colors.grey,
+                          color: isPickup ? Colors.brown.shade200 : Colors.transparent,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            bottomLeft: Radius.circular(8),
                           ),
                         ),
+                        child: const Center(child: Text("Pickup")),
                       ),
                     ),
                   ),
-
-                  /// Dropoff
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isPickupSelected = false;
-                        });
-                      },
+                      onTap: () => setState(() => isPickup = false),
                       child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: !isPickupSelected
-                              ? const Color(0xffDCC8A1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Dropoff",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: !isPickupSelected
-                                ? Colors.black
-                                : Colors.grey,
+                          color: !isPickup ? Colors.brown.shade200 : Colors.transparent,
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
                           ),
                         ),
+                        child: const Center(child: Text("Dropoff")),
                       ),
                     ),
                   ),
@@ -127,9 +77,102 @@ class _RequestViewState extends State<ChangeRequestPage> {
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(height: 24),
+
+            // Saved Addresses
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Saved Addresses',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Add New Address'),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('Home'),
+                  subtitle: const Text('123 Maple Street'),
+                  trailing: selectedAddress == 'Home' ? const Icon(Icons.check) : null,
+                  onTap: () => setState(() => selectedAddress = 'Home'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text("Grandma's House"),
+                  subtitle: const Text('789 Pine Lane'),
+                  trailing: selectedAddress == "Grandma's House" ? const Icon(Icons.check) : null,
+                  onTap: () => setState(() => selectedAddress = "Grandma's House"),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            // Date options
+            Column(
+              children: [
+                RadioListTile<String>(
+                  title: const Text('Today (Monday)'),
+                  value: 'Today',
+                  groupValue: selectedDateOption,
+                  onChanged: (value) => setState(() => selectedDateOption = value!),
+                ),
+                RadioListTile<String>(
+                  title: const Text('Tomorrow'),
+                  value: 'Tomorrow',
+                  groupValue: selectedDateOption,
+                  onChanged: (value) => setState(() => selectedDateOption = value!),
+                ),
+                RadioListTile<String>(
+                  title: const Text('Specific date'),
+                  value: 'Specific date',
+                  groupValue: selectedDateOption,
+                  onChanged: (value) => setState(() => selectedDateOption = value!),
+                ),
+                RadioListTile<String>(
+                  title: const Text('Duration'),
+                  value: 'Duration',
+                  groupValue: selectedDateOption,
+                  onChanged: (value) => setState(() => selectedDateOption = value!),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            // Next button (responsive width)
+            SizedBox(
+              width: screenWidth * 0.9,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow.shade700,
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'Next',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.location_on), label: 'Addresses'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }
