@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parent_app/features/home/presentation/home_body.dart';
 import 'package:parent_app/features/home/presentation/home_page.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         fontFamily: 'Lexend',
       ),
-      home: HomePage(),
+      home: HomeBody(),
     );
   }
 }

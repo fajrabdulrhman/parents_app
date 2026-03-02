@@ -3,7 +3,8 @@ import 'package:parent_app/features/locations/views/locations_page_body.dart';
 import 'package:parent_app/features/notifications/views/notifications_page_body.dart';
 import 'package:parent_app/features/profile/views/profile_page_body.dart';
 import 'package:parent_app/features/settings/views/settings_page.dart';
-import 'package:parent_app/features/home/presentation//home_body.dart';
+
+import 'home_body.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,8 +36,14 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.transparent,
             destinations: [
               NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-              NavigationDestination(icon: Icon(Icons.pin_drop), label: 'Locations'),
-              NavigationDestination(icon: Icon(Icons.notifications), label: 'Notifications'),
+              NavigationDestination(
+                icon: Icon(Icons.pin_drop),
+                label: 'Locations',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.notifications),
+                label: 'Notifications',
+              ),
               NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
             ],
             selectedIndex: currentWidgetIndex,
@@ -57,14 +64,19 @@ class _HomePageState extends State<HomePage> {
                   spacing: 6,
                   children: [
                     Icon(Icons.bus_alert, size: 24),
-                    Text("Safe Route", style: TextStyle(fontWeight: FontWeight.w700)),
+                    Text(
+                      "Safe Route",
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
                   ],
                 ),
               ),
               actions: [
                 IconButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => SettingsPage()));
+                    Navigator.of(
+                      context,
+                    ).push(MaterialPageRoute(builder: (_) => SettingsPage()));
                   },
                   icon: Icon(Icons.settings, size: 24),
                   color: Colors.black,
